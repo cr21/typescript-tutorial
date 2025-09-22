@@ -1,30 +1,78 @@
-let myname = 'Dave' // implicit type inference
+let stringArr = ['one','two','three']
 
-let myage: number;
-myage = 31 // explicit type inference
 
-myname='John'
-myage=32
+let guitars = ['strat','Les Paul','Gibson', 5150]
+let mixedData = ['EVH', 1984, true]
 
-console.log(myname,myage)
+guitars[0]=1984
+console.log(guitars)
+guitars.push('Jimi')
+console.log(guitars)
 
-const sum = (a : number,b : string)  => {
-    return a+b
+
+let tet =[]
+
+tet=[1,'chirag',true, null,[]]
+console.log(tet)
+
+let mutuple:[string, number, boolean ]=['Dave',1984,true]
+console.log(mutuple)
+mutuple[0]='chirag'
+
+
+let myobj:object
+
+myobj = mutuple
+console.log(typeof myobj)
+console.log(typeof mutuple)
+
+myobj= {'name':'chirag','age':21}
+console.log(typeof myobj)
+console.log(myobj)
+
+
+myobj = {}
+
+const exampleobj = {
+    name:'chirag',
+    age:true
 }
 
-let album : string | number;
+interface guitarist  {
+    name?:string,
+    active?:boolean,
+    albums:(string | number)[]
+}
 
-album = 'The Dark Side of the Moon'
-album = 1973
-album=NaN
-
-let isactive: boolean | number|string;
-isactive=true
-isactive=1
-isactive='active'
+const evh:guitarist = {
+    name:'Eddie Van Halen',
+    albums:['Van Halen',515,'For Unlawful Carnal Knowledge']
+}
 
 
-let postId : string | number;
+let jp:guitarist = {        
 
-let re:RegExp = /\w+/g
+    albums:['John Petrucci', 'Petrucci']
+}
 
+const greetGuitarist = (guitarist:guitarist) => {
+    if (guitarist.name) {
+        return `Hello ${guitarist.name.toUpperCase()}!`
+    }
+    return 'Hello'
+}
+
+console.log(greetGuitarist(evh))
+console.log(greetGuitarist(jp))
+
+// ENUMS
+enum Grade {
+    U=1,
+    D=2,
+    C=3,
+    B=4,
+    A=5
+}
+
+let myGrade:Grade = Grade.A
+console.log(myGrade)
