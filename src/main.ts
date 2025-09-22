@@ -1,12 +1,30 @@
-let username = "Mitesh"
-console.log(username)
+let myname = 'Dave' // implicit type inference
 
-let a :number = 12;
-let b = '6'
-let c:number = 2
-console.log(a+b+c)
+let myage: number;
+myage = 31 // explicit type inference
 
-console.log(a + b + c);
-//# sourceMappingURL=main.js.map
-b=6
-console.log(a/b)
+myname='John'
+myage=32
+
+console.log(myname,myage)
+
+const sum = (a : number,b : string)  => {
+    return a+b
+}
+
+let album : string | number;
+
+album = 'The Dark Side of the Moon'
+album = 1973
+album=NaN
+
+let isactive: boolean | number|string;
+isactive=true
+isactive=1
+isactive='active'
+
+
+let postId : string | number;
+
+let re:RegExp = /\w+/g
+
