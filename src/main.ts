@@ -1,78 +1,95 @@
-let stringArr = ['one','two','three']
+// type or alias
+type StringOrNumber = string | number;
+type StringOrNumberArray = (string | number)[];
 
-
-let guitars = ['strat','Les Paul','Gibson', 5150]
-let mixedData = ['EVH', 1984, true]
-
-guitars[0]=1984
-console.log(guitars)
-guitars.push('Jimi')
-console.log(guitars)
-
-
-let tet =[]
-
-tet=[1,'chirag',true, null,[]]
-console.log(tet)
-
-let mutuple:[string, number, boolean ]=['Dave',1984,true]
-console.log(mutuple)
-mutuple[0]='chirag'
-
-
-let myobj:object
-
-myobj = mutuple
-console.log(typeof myobj)
-console.log(typeof mutuple)
-
-myobj= {'name':'chirag','age':21}
-console.log(typeof myobj)
-console.log(myobj)
-
-
-myobj = {}
-
-const exampleobj = {
-    name:'chirag',
-    age:true
-}
-
-interface guitarist  {
+type guitarist =  {
     name?:string,
     active?:boolean,
-    albums:(string | number)[]
+    albums:StringOrNumberArray
 }
 
-const evh:guitarist = {
-    name:'Eddie Van Halen',
-    albums:['Van Halen',515,'For Unlawful Carnal Knowledge']
+type userId = StringOrNumber;
+
+// literal type
+let myName:'Dave';
+
+let userName:'Dave'|'John';
+
+userName='John'
+
+// functions
+
+const add = (a:number, b:number):number => {
+    return a+b;
 }
 
-
-let jp:guitarist = {        
-
-    albums:['John Petrucci', 'Petrucci']
+const logMessage = (msg:string):void => {
+    console.log(msg);
 }
 
-const greetGuitarist = (guitarist:guitarist) => {
-    if (guitarist.name) {
-        return `Hello ${guitarist.name.toUpperCase()}!`
-    }
-    return 'Hello'
+// objects
+let person:{name:string, age:number} = {name:'Dave', age:40};
+
+logMessage(person.name);
+logMessage(add(1,2).toString());
+
+let subtract = function (c:number, d:number):number {
+    return c-d;
+}
+logMessage(subtract(1,2).toString());
+
+type mathFunction = (a:number, b:number) => number;
+// interface mathFunction {
+//     (a:number, b:number):number;
+// } 
+
+
+let multiply:mathFunction=(a,b)=>a*b;
+
+let divide:mathFunction=function(a,b){return    a/b};
+
+logMessage(multiply(2,2).toString());
+logMessage(divide(1,2).toString());
+
+
+// optional parameters
+
+const addAll = (a:number, b:number, c?:number):number => {
+    if(c) return a+b+c;
+    return a+b;
 }
 
-console.log(greetGuitarist(evh))
-console.log(greetGuitarist(jp))
-
-// ENUMS
-enum Grade {
-    U=1,
-    D=2,
-    C=3,
-    B=4,
-    A=5
+const sumAll = (a:number, b:number, c:number=3):number => {
+    return a+b+c;
 }
 
-let myGrade:Grade = Grade.A
-console.log(myGrade)
+logMessage(addAll(1,2,3).toString());
+logMessage(sumAll(1,2).toString());
+
+// default parameters
+
+
+// rest parameters
+const total = (a:number,...nums:number[]):number => {
+    return nums.reduce((acc,curr)=>acc+curr, a);
+}
+
+logMessage(total(10,1,2,3,4,5).toString());
+
+// destructuring
+
+const isNumber = (value:any):boolean => {
+    return typeof value === 'number' ? true : false;
+}
+
+logMessage(isNumber(1).toString());
+
+// type guards
+const createError = (errMsg:string):never => {
+    throw new Error(errMsg);
+}
+const numberOrString =   (value:number|string):string => {
+    if (typeof value === 'string') return 'string'
+    if (typeof value === 'number') return 'number'
+    return createError('Value can only be a string or a number');
+}
