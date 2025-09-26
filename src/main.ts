@@ -1,109 +1,81 @@
-// index signrature
+const stringEcho = (arg:string):string => arg
 
-interface TransactionObj {
-    readonly [index: string]:number
-    Pizza: number,
-    Books: number,
-    Job: number,
-}
+const echo = <T>(arg:T):T => arg
 
-// interface TransactionObj {
-//     readonly [index: string]:number
-// }
+const isObj =<T>(arg:T):boolean => {
+    return typeof arg === 'object' && !Array.isArray(arg) && arg !== null
+} 
 
-
-
-const todaysTransactions: TransactionObj = {
-    Pizza: -10,
-    Books: -5,
-    Job: 50,
-    'dave':1
-}
-
-console.log(todaysTransactions.Pizza);
-console.log(todaysTransactions['Pizza']);
-
-let prop: string = 'Pizza'
-console.log(todaysTransactions[prop]);
-
-const todaysNet = (transactions: TransactionObj):number => {
-    let total = 0;
-    for(const transaction in transactions) {
-        total += transactions[transaction] ?? 0;
+const isTrue = <T>(arg:T):{arg:T,is:boolean} => {
+    if (Array.isArray(arg) && !arg.length) {
+        return {arg:arg,is:false}
     }
-    return total;
+    if (isObj(arg) && !Object.keys(arg as keyof T).length) {
+        return {arg:arg,is:false}
+    }
+    return {arg:arg,is:!!arg}
 }
 
-console.log(todaysNet(todaysTransactions));
+console.log(isTrue(true))
+console.log(isTrue(false))
+console.log(isTrue(0))
+console.log(isTrue(1))
+console.log(isTrue(''))
+console.log(isTrue('test'))
+console.log(isTrue([]))
+console.log(isTrue([1,2,3]))
+console.log(isTrue({}))
+console.log(isTrue({name: 'John'}))
+console.log(isTrue(null))
+console.log(isTrue(undefined))
+console.log(isTrue(new Date()))
+console.log(isTrue(new Error()))
+console.log(isTrue(new Promise((resolve, reject) => resolve('test'))))
+console.log(NaN)
+console.log(isTrue(NaN))
 
-console.log(prop);
-console.log(todaysTransactions[prop]);
-// todaysTransactions.Pizza = 40;
-console.log(todaysTransactions['Chirag']);
 
-
-interface Student {
-    [key: string]: string|number|number[]|undefined,
-    name: string,
-    GPA: number,
-    classes?: number[]
+interface BoolCheck<T> {
+    value:T,
+    is:boolean
 }
 
-const student: Student = {
-    name: 'Chirag',
-    GPA: 3.5,
-    classes: [100,200]
+const checkBoolValue = <T>(arg:T):BoolCheck<T> => {
+    if (Array.isArray(arg) && !arg.length) {
+        return {value:arg,is:false}
+    }
+    if (isObj(arg) && !Object.keys(arg as keyof T).length) {
+        return {value:arg,is:false}
+    }
+    return {value:arg,is:!!arg}
 }
 
-console.log(student.test)
+console.log(checkBoolValue(true))
+console.log(checkBoolValue(false))
+console.log(checkBoolValue(0))
+console.log(checkBoolValue(1))
+console.log(checkBoolValue(''))
+console.log(checkBoolValue('test'))
 
-for (const key in student) {
-    console.log(`${key}: ${student[key as keyof Student]}`)
-}
-console.log('--------------------------------')
-Object.keys(student).forEach(key => {
-    console.log(`${key}: ${student[key as keyof Student]}`)
-})
-console.log('--------------------------------')
-Object.values(student).forEach(value => {
-    console.log(`${value}`)
-})
-console.log('--------------------------------')
-Object.entries(student).forEach(([key,value]) => {
-    console.log(`${key}: ${value}`)
-})
-console.log('--------------------------------')
-Object.keys(student).map(key => {
-    console.log(student[key as keyof  Student])
-})
-console.log('--------------------------------')
-
-const logStudentKey = (student:Student, key:keyof Student):void => {
-    console.log(`Student ${key}: ${student[key as keyof Student]}`)
-}
-student.test = 'test'
-logStudentKey(student, 'name')
-logStudentKey(student, 'GPA')
-logStudentKey(student, 'classes')
-logStudentKey(student, 'test')
-
-
-type Streams = 'salary' | 'youtube' | 'other'
-
-type Incomes = Record<Streams,number|string>
-
-const incomes: Incomes = {
-    salary: 1000,
-    youtube: '1000',
-    other: 1000
-}
-for (const key in incomes) {
-    console.log(`${key}: ${incomes[key as keyof Incomes]}`)
+interface HasId {
+    id: number
 }
 
+const processUser = <T extends HasId>(user:T):T => {
+    return user
+}
+
+console.log(processUser({id: 1, name: 'John'}))
+console.log(processUser({name: 'John','id':2,'email':'john@gmail.com'}))
 
 
+const getUserProperty = <T extends HasId, k extends keyof T>(users:T[],key:k) : T[k][]=>{
+    return users.map(user => user[key])
+}
 
-
-
-
+console.log(getUserProperty([{id: 1, name: 'John'},{id: 2, name: 'Jane',email:'john@gmail.com'}],'email'))
+console.log(getUserProperty([{id: 1, name: 'John'},{id: 2, name: 'Jane'}],'id'))
+// console.log(getUserProperty([{id: 1, name: 'John'},{id: 2, name: 'Jane'}],'email'))
+console.log(getUserProperty([{id: 1, name: 'John'},{id: 2, name: 'Jane'}],'name'))
+console.log(getUserProperty([{id: 1, name: 'John'},{id: 2, name: 'Jane'}],'id'))
+// console.log(getUserProperty([{id: 1, name: 'John'},{id: 2, name: 'Jane'}],'email'))
